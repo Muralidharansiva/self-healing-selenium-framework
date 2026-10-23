@@ -1,0 +1,15 @@
+[
+    {
+        "element": "Login Button",
+        "original_locator": [
+            "id",
+            "loginButton"
+        ],
+        "healed_locator": [
+            "id",
+            "signinButton"
+        ],
+        "confidence": 100,
+        "status": "HEALED"
+    }
+]

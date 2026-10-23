@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Self Healing Demo</title>
+</head>
+
+<body>
+
+    <h1>Login Page</h1>
+
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+
+    <!-- Original locator was: loginButton -->
+    <!-- Application changed it to: signinButton -->
+    <button id="signinButton" name="signin" onclick="login()">Login</button>
+
+    <p id="message"></p>
+
+    <script>
+        function login() {
+            document.getElementById("message").innerText = "Login successful";
+        }
+    </script>
+
+</body>
+</html>
