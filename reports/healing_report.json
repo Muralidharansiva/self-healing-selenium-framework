@@ -1,5 +1,23 @@
 [
     {
+        "timestamp": "2026-10-23T16:57:25",
+        "test": "tests/test_login.py::TestLogin::test_login_with_self_healing",
+        "element": "Login Button",
+        "original_locator": [
+            "id",
+            "loginButton"
+        ],
+        "healed_locator": [
+            "id",
+            "signinButton"
+        ],
+        "confidence": 100,
+        "status": "HEALED",
+        "screenshot": "screenshots/20261023_165725_335598_Login_Button.png"
+    },
+    {
+        "timestamp": "2026-10-23T16:57:29",
+        "test": "tests/test_login.py::TestLogin::test_login_with_name_change",
         "element": "Login Button",
         "original_locator": [
             "id",
@@ -10,6 +28,33 @@
             "signinButton"
         ],
         "confidence": 80,
-        "status": "HEALED"
+        "status": "HEALED",
+        "screenshot": "screenshots/20261023_165728_800674_Login_Button.png"
+    },
+    {
+        "timestamp": "2026-10-23T16:57:32",
+        "test": "tests/test_login.py::TestLogin::test_login_fails_when_healing_is_ambiguous",
+        "element": "Login Button",
+        "original_locator": [
+            "id",
+            "loginButton"
+        ],
+        "healed_locator": null,
+        "confidence": 100,
+        "status": "AMBIGUOUS",
+        "screenshot": "screenshots/20261023_165732_187229_Login_Button.png"
+    },
+    {
+        "timestamp": "2026-10-23T16:57:35",
+        "test": "tests/test_login.py::TestLogin::test_login_fails_when_no_confident_candidate_exists",
+        "element": "Login Button",
+        "original_locator": [
+            "id",
+            "loginButton"
+        ],
+        "healed_locator": null,
+        "confidence": 15,
+        "status": "NOT_HEALED",
+        "screenshot": "screenshots/20261023_165735_497242_Login_Button.png"
     }
 ]

@@ -1,3 +1,4 @@
+from framework.config.config_loader import ConfigLoader
 from framework.healing.candidate_finder import CandidateFinder
 from framework.healing.similarity import calculate_similarity
 from framework.healing.confidence import is_confident
@@ -10,6 +11,16 @@ class HealingEngine:
 
         self.driver = driver
         self.candidate_finder = CandidateFinder(driver)
+
+        config = ConfigLoader().get_healing_config()
+
+        self.confidence_threshold = config[
+            "confidence_threshold"
+        ]
+
+        self.ambiguity_margin = config[
+            "ambiguity_margin"
+        ]
 
     def heal(
         self,
@@ -24,8 +35,7 @@ class HealingEngine:
             expected_tag
         )
 
-        best_candidate = None
-        best_score = 0
+        scored_candidates = []
 
         for candidate in candidates:
 
@@ -48,16 +58,67 @@ class HealingEngine:
                 actual_class
             )
 
-            if score > best_score:
+            scored_candidates.append(
+                (
+                    candidate,
+                    score
+                )
+            )
 
-                best_score = score
-                best_candidate = candidate
+        scored_candidates.sort(
+            key=lambda item: item[1],
+            reverse=True
+        )
 
-        if best_candidate and is_confident(best_score):
+        if not scored_candidates:
 
             return {
-                "element": best_candidate,
-                "confidence": confidence_percentage(best_score)
+                "status": "NOT_HEALED",
+                "element": None,
+                "confidence": 0
             }
 
-        return None
+        best_candidate = scored_candidates[0][0]
+        best_score = scored_candidates[0][1]
+
+        best_confidence = confidence_percentage(
+            best_score
+        )
+
+        if not is_confident(
+            best_score,
+            self.confidence_threshold
+        ):
+
+            return {
+                "status": "NOT_HEALED",
+                "element": None,
+                "confidence": best_confidence
+            }
+
+        if len(scored_candidates) > 1:
+
+            second_score = scored_candidates[1][1]
+
+            if is_confident(
+                second_score,
+                self.confidence_threshold
+            ):
+
+                score_difference = (
+                    best_score - second_score
+                )
+
+                if score_difference <= self.ambiguity_margin:
+
+                    return {
+                        "status": "AMBIGUOUS",
+                        "element": None,
+                        "confidence": best_confidence
+                    }
+
+        return {
+            "status": "HEALED",
+            "element": best_candidate,
+            "confidence": best_confidence
+        }

@@ -43,6 +43,11 @@ class SmartElement:
 
         except NoSuchElementException:
 
+            screenshot = self.reporter.capture_screenshot(
+                self.driver,
+                self.name
+            )
+
             result = self.healing_engine.heal(
                 self.expected_text,
                 self.expected_tag,
@@ -51,14 +56,42 @@ class SmartElement:
                 self.expected_class
             )
 
-            if not result:
+            status = result["status"]
+            confidence = result["confidence"]
+
+            if status == "AMBIGUOUS":
+
+                self.reporter.add_event(
+                    self.name,
+                    self.locator,
+                    None,
+                    confidence,
+                    "AMBIGUOUS",
+                    screenshot
+                )
+
+                raise Exception(
+                    "Unable to heal element: "
+                    f"{self.name} because multiple candidates "
+                    "have the same confidence"
+                )
+
+            if status == "NOT_HEALED":
+
+                self.reporter.add_event(
+                    self.name,
+                    self.locator,
+                    None,
+                    confidence,
+                    "NOT_HEALED",
+                    screenshot
+                )
 
                 raise Exception(
                     f"Unable to heal element: {self.name}"
                 )
 
             element = result["element"]
-            confidence = result["confidence"]
 
             healed_locator = self.get_locator(
                 element
@@ -68,7 +101,9 @@ class SmartElement:
                 self.name,
                 self.locator,
                 healed_locator,
-                confidence
+                confidence,
+                "HEALED",
+                screenshot
             )
 
             element.click()
@@ -91,6 +126,19 @@ class SmartElement:
             return (
                 By.NAME,
                 element_name
+            )
+
+        element_class = element.get_attribute(
+            "class"
+        )
+
+        if element_class:
+
+            class_name = element_class.split()[0]
+
+            return (
+                By.CLASS_NAME,
+                class_name
             )
 
         return (

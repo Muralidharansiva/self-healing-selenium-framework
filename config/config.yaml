@@ -1,0 +1,14 @@
+browser:
+  name: chrome
+  headless: true
+  window_width: 1920
+  window_height: 1080
+
+healing:
+  confidence_threshold: 0.80
+  ambiguity_margin: 0.00
+
+report:
+  json_path: reports/healing_report.json
+  html_path: reports/healing_report.html
+  screenshot_dir: reports/screenshots

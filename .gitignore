@@ -1,4 +1,9 @@
+.venv/
 venv/
 __pycache__/
-.pytest_cache/
 *.pyc
+.pytest_cache/
+
+reports/*.json
+reports/*.html
+reports/screenshots/
