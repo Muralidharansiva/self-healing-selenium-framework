@@ -14,6 +14,7 @@ class SmartElement:
         expected_text,
         expected_type,
         expected_name,
+        expected_class,
         reporter,
         name
     ):
@@ -24,6 +25,7 @@ class SmartElement:
         self.expected_text = expected_text
         self.expected_type = expected_type
         self.expected_name = expected_name
+        self.expected_class = expected_class
         self.reporter = reporter
         self.name = name
 
@@ -45,7 +47,8 @@ class SmartElement:
                 self.expected_text,
                 self.expected_tag,
                 self.expected_type,
-                self.expected_name
+                self.expected_name,
+                self.expected_class
             )
 
             if not result:

@@ -17,6 +17,7 @@ class LoginPage:
             "Login",
             "submit",
             "signin",
+            "login-button",
             reporter,
             "Login Button"
         )

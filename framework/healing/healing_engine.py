@@ -16,7 +16,8 @@ class HealingEngine:
         expected_text,
         expected_tag,
         expected_type,
-        expected_name
+        expected_name,
+        expected_class
     ):
 
         candidates = self.candidate_finder.find_candidates(
@@ -32,6 +33,7 @@ class HealingEngine:
             actual_tag = candidate.tag_name
             actual_type = candidate.get_attribute("type")
             actual_name = candidate.get_attribute("name")
+            actual_class = candidate.get_attribute("class")
 
             score = calculate_similarity(
                 expected_text,
@@ -41,7 +43,9 @@ class HealingEngine:
                 expected_type,
                 actual_type,
                 expected_name,
-                actual_name
+                actual_name,
+                expected_class,
+                actual_class
             )
 
             if score > best_score:
